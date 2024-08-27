@@ -3,12 +3,17 @@ import classes from "./page.module.css"
 import MealsGrid from "@/components/Meals/MealsGrid"
 import { getMeals } from "@/db/controller/mealsController"
 import connectMongo from "@/db/connectMongo";
+import { Suspense } from "react";
+import MealsLoadingPage from "./loading-out";
 
-export default async function MealsPage() {
-
+async function Meals() {
     await connectMongo();
     const meals = await getMeals();
-    console.log("MEALS : ", meals);
+    return <MealsGrid meals={meals} />
+
+}
+
+export default function MealsPage() {
 
     return (
         <>
@@ -25,7 +30,9 @@ export default async function MealsPage() {
                 </p>
             </header>
             <main className={classes.main}>
-                <MealsGrid meals={meals} />
+                <Suspense fallback={<MealsLoadingPage />}>
+                    <Meals />
+                </Suspense>
             </main>
         </>
     )

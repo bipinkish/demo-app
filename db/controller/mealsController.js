@@ -17,7 +17,7 @@ export const createMeals = async (req, res) => {
 
 
 
-export const getMeals = async (req, res) => {
+export const getMeals = async () => {
     try {
         console.log("GET function STARTED");
         await new Promise((resolve) => setTimeout(resolve, 5000))
@@ -27,3 +27,17 @@ export const getMeals = async (req, res) => {
         console.log(error);
     }
 };
+
+export const getMealByName = async (slug) => {
+    try {
+        console.log("GET BY MEAL NAME function STARTED");
+        await new Promise((resolve) => setTimeout(resolve, 5000))
+        const meals = await Meal.findOne({ slug: slug }).lean();
+        console.log("Meals specific : ", meals);
+
+        return meals;
+    } catch (error) {
+        console.log(error);
+
+    }
+}
